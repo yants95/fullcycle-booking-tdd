@@ -41,4 +41,14 @@ describe('Booking Entity', () => {
             new Booking('1', property, user, dateRange, 5)
         }).toThrow('O número de hóspedes excede o máximo permitido. Máximo permitido: 4')
     })
+
+    it('should calculate total price with discount', () => {
+        const property = new Property('1', 'Apartamento', 'Um lindo apartamento', 4, 300)
+        const user = new User('1', 'Ana Souza')
+        const dateRange = new DateRange(new Date('2024-12-01'), new Date('2024-12-10'))
+
+        const booking = new Booking('1', property, user, dateRange, 4)
+
+        expect(booking.getTotalPrice()).toBe(300 * 9 * 0.9)
+    })
 })

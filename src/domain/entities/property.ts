@@ -74,6 +74,6 @@ export class Property {
     }
 
     getBookings(): Booking[] {
-        return [...this.#bookings];
+        return this.#bookings;
     }
 }
