@@ -51,4 +51,16 @@ describe('Booking Entity', () => {
 
         expect(booking.getTotalPrice()).toBe(300 * 9 * 0.9)
     })
+
+    it('should not book when property is already booked for the date range', () => {
+        const property = new Property('1', 'Apartamento', 'Um lindo apartamento', 4, 300)
+        const user = new User('1', 'Ana Souza')
+        const dateRange = new DateRange(new Date('2024-12-01'), new Date('2024-12-10'))
+        const booking = new Booking('1', property, user, dateRange, 4)
+        const dateRange2 = new DateRange(new Date('2024-12-02'), new Date('2024-12-09'))
+
+        expect(() => {
+            new Booking('2', property, user, dateRange2, 4)
+        }).toThrow('A propriedade já está reservada para este período')
+    })
 })

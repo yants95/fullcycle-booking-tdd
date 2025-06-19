@@ -22,6 +22,9 @@ export class Booking {
             throw new Error('O número de hóspedes deve ser maior que zero');
         }
         property.validateGuestCount(guestCount);
+        if (!property.isAvailable(dateRange)) {
+            throw new Error('A propriedade já está reservada para este período');
+        }
 
         this.#id = id;
         this.#property = property;
@@ -29,6 +32,7 @@ export class Booking {
         this.#dateRange = dateRange;
         this.#guestCount = guestCount;
         this.#totalPrice = property.calculateTotalPrice(dateRange);
+        this.#status = 'CONFIRMED'; 
 
         property.addBooking(this);
     }
