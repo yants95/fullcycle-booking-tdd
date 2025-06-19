@@ -1,13 +1,21 @@
 export class Property {
     readonly #id: string;
-    readonly #title: string;
+    readonly #name: string;
     readonly #description: string;
     readonly #maxGuests: number;
     readonly #basePricePerNight: number;
 
-    constructor(id: string, title: string, description: string, maxGuests: number, basePricePerNight: number) {
+    constructor(id: string, name: string, description: string, maxGuests: number, basePricePerNight: number) {
+        if (!name) {
+            throw new Error('O nome é obrigatório');
+        }
+
+        if (maxGuests <= 0) {
+            throw new Error('O número máximo de hóspedes deve ser maior que zero');
+        }
+        this.validateGuestCount(maxGuests);
         this.#id = id;
-        this.#title = title;
+        this.#name = name;
         this.#description = description;
         this.#maxGuests = maxGuests;
         this.#basePricePerNight = basePricePerNight;
@@ -17,8 +25,8 @@ export class Property {
         return this.#id;
     }
 
-    getTitle(): string {
-        return this.#title;
+    getName(): string {
+        return this.#name;
     }
 
     getDescription(): string {
@@ -31,5 +39,11 @@ export class Property {
 
     getBasePricePerNight(): number {
         return this.#basePricePerNight;
+    }
+
+    validateGuestCount(guestCount: number): void {
+        if (guestCount > this.#maxGuests) {
+            throw new Error(`O número de hóspedes excede o máximo permitido. Máximo permitido: ${this.#maxGuests}`);
+        }
     }
 }
