@@ -1,3 +1,5 @@
+import { DateRange } from "../value-objects/date-range";
+
 export class Property {
     readonly #id: string;
     readonly #name: string;
@@ -45,5 +47,16 @@ export class Property {
         if (guestCount > this.#maxGuests) {
             throw new Error(`O número de hóspedes excede o máximo permitido. Máximo permitido: ${this.#maxGuests}`);
         }
+    }
+
+    calculateTotalPrice(dateRange: DateRange): number {
+        const totalNights = dateRange.getTotalNights();
+        let totalPrice = totalNights * this.#basePricePerNight;
+
+        if (totalNights >= 7) {
+            totalPrice *= 0.9; // 10% de desconto para estadias de 7 noites ou mais
+        }
+
+        return totalPrice;
     }
 }

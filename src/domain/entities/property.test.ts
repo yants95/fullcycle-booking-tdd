@@ -1,4 +1,5 @@
 import { Property } from './property'
+import { DateRange } from '../value-objects/date-range'
 
 describe('Property Entity', () => {
     it('should create a property with valid data', () => {
@@ -33,5 +34,23 @@ describe('Property Entity', () => {
         expect(() => {
             property.validateGuestCount(6)
         }).toThrow('O número de hóspedes excede o máximo permitido. Máximo permitido: 5')
+    })
+
+    it('should not apply discounts for stays less than 7 nights', () => {
+        const property = new Property('1', 'apartamento', 'uma bela casa na praia', 2, 100)
+        const dateRange = new DateRange(new Date('2024-10-10'), new Date('2024-10-16'))
+        
+        const totalPrice = property.calculateTotalPrice(dateRange)
+        
+        expect(totalPrice).toBe(600)
+    })
+
+    it('should not apply discounts for stays more than 7 nights', () => {
+        const property = new Property('1', 'apartamento', 'uma bela casa na praia', 2, 100)
+        const dateRange = new DateRange(new Date('2024-10-10'), new Date('2024-10-17'))
+        
+        const totalPrice = property.calculateTotalPrice(dateRange)
+        
+        expect(totalPrice).toBe(630)
     })
 })
